@@ -1,0 +1,105 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Query</title>
+    </head>
+<body>
+  <h1>Query für CoronaApp</h1>
+  <p>
+    <h2>Zähler für IDs hochzählen und dann bekommen</h2><br>
+UPDATE `counters` SET `counter`=`counter` + 1 WHERE `num` = 1;<br>
+SELECT `counter` FROM `counters` WHERE num = 1;<br>
+(num=0 für nutzer und num=1 für events)<br>
+<b>getNewID.php?type=[user|event]</b><br>
+JSON:<br>
+[{<br>
+    "status": "ok",<br>
+    "personID": "[personID]"<br>
+}]<br>
+<br>
+[{<br>
+    "status": "ok",<br>
+    "eventID": "[eventID]"<br>
+}]<br>
+<br>
+<h2>Negative Tests eintragen</h2><br>
+INSERT INTO `negative` (`personID`, `Timestamp`) VALUES ('2', '2021-03-11');<br>
+<b>setIDtoNegative.php?personid=[PersonID]&timestamp=[YYYY-mm-dd]&name=[Amtname]&password=[Passwort]</b><br>
+JSON:<br>
+[{<br>
+    "status": "ok",<br>
+    "message": "id inserted into negative"<br>
+}]<br>
+<br>
+<h2>Positive Tests eintragen</h2><br>
+INSERT INTO `positive` (`personID`, `Timestamp`) VALUES ('2', '2021-03-11');<br>
+<b>setIDtoPositive.php?personid=[PersonID]&timestamp=[YYYY-mm-dd]&name=[Amtname]&password=[Password]</b><br>
+JSON:<br>
+[{<br>
+    "status": "ok",<br>
+    "message": "id inserted into positive"<br>
+}]<br>
+<br>
+<h2>Events eintragen</h2><br>
+INSERT INTO `events` (`eventID`, `Timestamp`) VALUES ('1', '2021-03-11');<br>
+<b>addInfectedEvents.php</b><br>
+<b>PostInput!!!</b><br>
+JSON:<br>
+[{<br>
+    "0":<br>
+        "eventid": "[eventID]",<br>
+        "timestamp": "[YYYY-mm-dd]"<br>
+}]<br>
+<br>
+Output:<br>
+[{<br>
+    "status": "ok",<br>
+    "message": "events inserted"<br>
+}]<br>
+<br>
+Tabelle amt alibi registrierung<br>
+<br>
+<h2>Alle aktuellen  positiven Events</h2><br>
+SELECT `eventID` FROM `events` WHERE `Timestamp` > '2021-02-11'<br>
+<b>getRiskEvents.php</b><br>
+JSON:<br>
+[{<br>
+    "status": "ok",<br>
+    "events": {<br>
+        "0": "[EventID]",<br>
+        ...<br>
+    }<br>
+}]<br>
+<br>
+<h2>Prüfen ob man einen aktuellen negativen Test hat</h2><br>
+SELECT `personID` FROM `negative` WHERE `personID` = '1' AND `Timestamp` > '2021-02-11'<br>
+<b>getCheckNegative.php?personid=[personID]</b><br>
+JSON:<br>
+[{<br>
+    "status": "ok",<br>
+    "message": "[true/false]"<br>
+}]<br>
+<br>
+<h2>aktuelle positive IDs</h2><br>
+SELECT `personID` FROM `positive` WHERE `Timestamp` > '2021-02-11'<br>
+<b>getRiskUsers.php</b><br>
+JSON:<br>
+[{<br>
+    "status": ok,<br>
+    "persons": {<br>
+        "0": "[PersonID]",<br>
+        ...<br>
+    }<br>
+}]<br>
+<br>
+<h2>Login Gesundheitsamt</h2>
+SELECT password FROM amt WHERE name=[Name Gesundheitsamt]<br>
+<b>checkLogin.php</b><br>
+JSON:<br>
+[{<br>
+    "status": "ok",<br>
+    "message": "login | wrong name / wrong password"<br>
+}]<br>
+  </p>
+</body>
+</html>
